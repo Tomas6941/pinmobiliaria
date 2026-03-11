@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Admin | Prime Inmobiliaria{% endblock %}
+{% block content %}
+<div class="login-page">
+  <div class="login-card">
+    <div class="brand" style="justify-content:center;margin-bottom:28px">
+      <span class="brand-mark">P</span>
+      <div class="brand-text">
+        <span class="brand-name">PRIME</span>
+        <span class="brand-sub">INMOBILIARIA</span>
+      </div>
+    </div>
+    <h2>Panel de administración</h2>
+    <form method="POST" class="form">
+      <div class="form-group"><label>Usuario</label><input type="text" name="usuario" required></div>
+      <div class="form-group"><label>Contraseña</label><input type="password" name="password" required></div>
+      <button type="submit" class="btn btn-primary w-full">Ingresar</button>
+    </form>
+    <div style="text-align:center;margin-top:20px"><a href="{{ url_for('index') }}" style="color:var(--muted);font-size:13px">← Volver al sitio</a></div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% block title %}Contacto | Prime Inmobiliaria{% endblock %}
+{% block content %}
+
+<div class="page-header">
+  <div class="wrap">
+    <h1>Contacto</h1>
+    <p>Un asesor te responde en menos de 24 horas</p>
+  </div>
+</div>
+
+<div class="contacto-page wrap">
+  <div class="ct-grid">
+    <div class="ct-form-col">
+      <div class="form-card">
+        <h2>Envianos tu consulta</h2>
+        <form method="POST" action="{{ url_for('contacto') }}" class="form">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Nombre completo *</label>
+              <input type="text" name="nombre" required placeholder="Tu nombre">
+            </div>
+            <div class="form-group">
+              <label>Email *</label>
+              <input type="email" name="email" required placeholder="tu@email.com">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Teléfono</label>
+              <input type="tel" name="telefono" placeholder="+54 11 XXXX-XXXX">
+            </div>
+            <div class="form-group">
+              <label>¿Qué te interesa?</label>
+              <select name="interes">
+                <option value="">Seleccioná</option>
+                <option {% if request.args.get('interes') %}selected{% endif %} value="{{ request.args.get('interes', '') }}">{{ request.args.get('interes', 'Consulta general') }}</option>
+                <option value="Comprar una propiedad">Comprar una propiedad</option>
+                <option value="Alquilar una propiedad">Alquilar una propiedad</option>
+                <option value="Vender mi propiedad">Vender mi propiedad</option>
+                <option value="Tasar mi propiedad">Tasar mi propiedad</option>
+                <option value="Otro">Otro</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Mensaje *</label>
+            <textarea name="mensaje" rows="5" required placeholder="Contanos en qué podemos ayudarte…"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary w-full">Enviar consulta</button>
+        </form>
+      </div>
+    </div>
+    <div class="ct-aside">
+      <div class="ct-info-card">
+        <h3>Información de contacto</h3>
+        <div class="ct-items">
+          <div class="ct-item">
+            <span class="ct-icon">📍</span>
+            <div>
+              <strong>Dirección</strong>
+              <p>{{ config.direccion }}</p>
+            </div>
+          </div>
+          <div class="ct-item">
+            <span class="ct-icon">📞</span>
+            <div>
+              <strong>Teléfono</strong>
+              <p><a href="tel:{{ config.telefono }}">{{ config.telefono }}</a></p>
+            </div>
+          </div>
+          <div class="ct-item">
+            <span class="ct-icon">✉️</span>
+            <div>
+              <strong>Email</strong>
+              <p><a href="mailto:{{ config.email }}">{{ config.email }}</a></p>
+            </div>
+          </div>
+          <div class="ct-item">
+            <span class="ct-icon">🕐</span>
+            <div>
+              <strong>Horarios</strong>
+              <p>Lun–Vie: 9:00–18:00<br>Sábados: 10:00–14:00</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <a href="https://wa.me/5491145678900?text=Hola%2C%20quiero%20hacer%20una%20consulta" class="btn-wa-big" target="_blank">
+        💬 Escribinos por WhatsApp
+      </a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

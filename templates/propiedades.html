@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% block title %}Propiedades | Prime Inmobiliaria{% endblock %}
+{% block content %}
+
+<div class="page-header">
+  <div class="wrap">
+    <h1>
+      {% if filtros.get('operacion') == 'venta' %}Propiedades en Venta
+      {% elif filtros.get('operacion') == 'alquiler' %}Propiedades en Alquiler
+      {% else %}Todas las propiedades{% endif %}
+    </h1>
+    <p>{{ propiedades|length }} propiedad{{ 'es' if propiedades|length != 1 else '' }} encontrada{{ 's' if propiedades|length != 1 else '' }}</p>
+  </div>
+</div>
+
+<div class="props-layout wrap">
+  <aside class="filtros-panel">
+    <div class="filtros-head">
+      <h3>Filtrar</h3>
+      {% if filtros %}
+        <a href="{{ url_for('propiedades') }}" class="clear-link">Limpiar</a>
+      {% endif %}
+    </div>
+    <form method="GET" action="{{ url_for('propiedades') }}" class="filtros-form">
+      <div class="ff-group">
+        <label>Operación</label>
+        <select name="operacion">
+          <option value="">Todas</option>
+          <option value="venta" {% if filtros.get('operacion') == 'venta' %}selected{% endif %}>Venta</option>
+          <option value="alquiler" {% if filtros.get('operacion') == 'alquiler' %}selected{% endif %}>Alquiler</option>
+        </select>
+      </div>
+      <div class="ff-group">
+        <label>Tipo</label>
+        <select name="tipo">
+          <option value="">Todos</option>
+          {% for t in ['departamento','casa','ph','local','oficina','terreno'] %}
+            <option value="{{ t }}" {% if filtros.get('tipo') == t %}selected{% endif %}>{{ t|capitalize }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="ff-group">
+        <label>Zona</label>
+        <select name="zona">
+          <option value="">Todas las zonas</option>
+          {% for z in zonas %}
+            <option value="{{ z }}" {% if filtros.get('zona') == z %}selected{% endif %}>{{ z }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="ff-group">
+        <label>Precio máximo</label>
+        <select name="precio_max">
+          <option value="">Sin límite</option>
+          <option value="100000" {% if filtros.get('precio_max') == '100000' %}selected{% endif %}>USD 100.000</option>
+          <option value="200000" {% if filtros.get('precio_max') == '200000' %}selected{% endif %}>USD 200.000</option>
+          <option value="350000" {% if filtros.get('precio_max') == '350000' %}selected{% endif %}>USD 350.000</option>
+          <option value="500000" {% if filtros.get('precio_max') == '500000' %}selected{% endif %}>USD 500.000</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary w-full">Aplicar filtros</button>
+    </form>
+  </aside>
+
+  <div class="props-results">
+    {% if propiedades %}
+    <div class="props-grid props-grid--list">
+      {% for p in propiedades %}
+      <article class="prop-card">
+        <a href="{{ url_for('propiedad_detalle', pid=p.id) }}" class="prop-card-link">
+          <div class="prop-img">
+            {% if p.imagen_url %}
+              <img src="{{ p.imagen_url }}" alt="{{ p.titulo }}" loading="lazy">
+            {% else %}
+              <div class="prop-img-placeholder">🏠</div>
+            {% endif %}
+            <span class="prop-badge prop-badge--{{ p.operacion }}">{{ p.operacion|capitalize }}</span>
+            {% if p.destacada %}<span class="prop-badge-dest">★ Destacada</span>{% endif %}
+          </div>
+          <div class="prop-body">
+            <div class="prop-tipo-zona">
+              <span class="prop-tipo">{{ p.tipo|capitalize }}</span>
+              <span class="prop-zona">📍 {{ p.zona }}</span>
+            </div>
+            <h3 class="prop-titulo">{{ p.titulo }}</h3>
+            <div class="prop-specs">
+              {% if p.ambientes %}<span>{{ p.ambientes }} amb.</span>{% endif %}
+              {% if p.dormitorios %}<span>{{ p.dormitorios }} dorm.</span>{% endif %}
+              {% if p.superficie_cubierta %}<span>{{ p.superficie_cubierta }} m²</span>{% endif %}
+            </div>
+            <div class="prop-footer">
+              <div class="prop-precio">
+                <span class="moneda">{{ p.moneda }}</span>
+                <strong>{{ '{:,.0f}'.format(p.precio|float) if p.precio else '—' }}</strong>
+              </div>
+              <span class="prop-ver">Ver detalle →</span>
+            </div>
+          </div>
+        </a>
+      </article>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+      <div class="empty-icon">🔍</div>
+      <h3>Sin resultados</h3>
+      <p>No encontramos propiedades con esos filtros.</p>
+      <a href="{{ url_for('propiedades') }}" class="btn btn-outline">Ver todas</a>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

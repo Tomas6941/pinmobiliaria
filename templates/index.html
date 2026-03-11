@@ -1,0 +1,213 @@
+{% extends 'base.html' %}
+{% block title %}Prime Inmobiliaria | Propiedades en Buenos Aires{% endblock %}
+{% block content %}
+
+<section class="hero">
+  <div class="hero-bg">
+    <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=2000&q=85" alt="Propiedades">
+    <div class="hero-overlay"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <span class="eyebrow-dot"></span>
+      <span>Buenos Aires · Zona Norte · GBA</span>
+    </div>
+    <h1 class="hero-title">Encontrá tu próxima<br><em>propiedad ideal.</em></h1>
+    <p class="hero-sub">Más de 300 propiedades en venta y alquiler. Asesoramiento personalizado desde 2005.</p>
+    <div class="hero-search">
+      <form action="{{ url_for('propiedades') }}" method="GET" class="search-bar">
+        <div class="search-tabs">
+          <label class="tab-label">
+            <input type="radio" name="operacion" value="venta" checked>
+            <span>Venta</span>
+          </label>
+          <label class="tab-label">
+            <input type="radio" name="operacion" value="alquiler">
+            <span>Alquiler</span>
+          </label>
+        </div>
+        <div class="search-fields">
+          <div class="sf-field">
+            <label>Tipo</label>
+            <select name="tipo">
+              <option value="">Todos</option>
+              <option value="departamento">Departamento</option>
+              <option value="casa">Casa</option>
+              <option value="ph">PH</option>
+              <option value="local">Local</option>
+              <option value="oficina">Oficina</option>
+              <option value="terreno">Terreno</option>
+            </select>
+          </div>
+          <div class="sf-field">
+            <label>Zona</label>
+            <input type="text" name="zona" placeholder="Ej: Palermo, Belgrano…">
+          </div>
+          <div class="sf-field">
+            <label>Precio máx.</label>
+            <select name="precio_max">
+              <option value="">Sin límite</option>
+              <option value="100000">USD 100.000</option>
+              <option value="200000">USD 200.000</option>
+              <option value="350000">USD 350.000</option>
+              <option value="500000">USD 500.000</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary search-btn">Buscar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="hstat"><span>+300</span><small>Propiedades</small></div>
+    <div class="hstat"><span>+20</span><small>Años en el mercado</small></div>
+    <div class="hstat"><span>+2.500</span><small>Operaciones cerradas</small></div>
+  </div>
+</section>
+
+<section class="section-destacadas">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="tag">Selección del mes</span>
+        <h2>Propiedades destacadas</h2>
+      </div>
+      <a href="{{ url_for('propiedades') }}" class="btn btn-outline">Ver todas →</a>
+    </div>
+    <div class="props-grid">
+      {% for p in destacadas %}
+      <article class="prop-card">
+        <a href="{{ url_for('propiedad_detalle', pid=p.id) }}" class="prop-card-link">
+          <div class="prop-img">
+            {% if p.imagen_url %}
+              <img src="{{ p.imagen_url }}" alt="{{ p.titulo }}" loading="lazy">
+            {% else %}
+              <div class="prop-img-placeholder">🏠</div>
+            {% endif %}
+            <span class="prop-badge prop-badge--{{ p.operacion }}">{{ p.operacion|capitalize }}</span>
+            {% if p.destacada %}<span class="prop-badge-dest">★ Destacada</span>{% endif %}
+          </div>
+          <div class="prop-body">
+            <div class="prop-tipo-zona">
+              <span class="prop-tipo">{{ p.tipo|capitalize }}</span>
+              <span class="prop-zona">📍 {{ p.zona }}</span>
+            </div>
+            <h3 class="prop-titulo">{{ p.titulo }}</h3>
+            <div class="prop-specs">
+              {% if p.ambientes %}<span>{{ p.ambientes }} amb.</span>{% endif %}
+              {% if p.dormitorios %}<span>{{ p.dormitorios }} dorm.</span>{% endif %}
+              {% if p.superficie_cubierta %}<span>{{ p.superficie_cubierta }} m²</span>{% endif %}
+            </div>
+            <div class="prop-footer">
+              <div class="prop-precio">
+                <span class="moneda">{{ p.moneda }}</span>
+                <strong>{{ '{:,.0f}'.format(p.precio|float) if p.precio else '—' }}</strong>
+              </div>
+              <span class="prop-ver">Ver →</span>
+            </div>
+          </div>
+        </a>
+      </article>
+      {% else %}
+      <div class="empty-props">
+        <p>Las propiedades destacadas aparecerán aquí. <a href="{{ url_for('admin_login') }}">Ingresá al panel</a> para cargarlas.</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section-tipos">
+  <div class="wrap">
+    <div class="sec-head centered">
+      <span class="tag">Buscá por tipo</span>
+      <h2>¿Qué estás buscando?</h2>
+    </div>
+    <div class="tipos-grid">
+      <a href="{{ url_for('propiedades') }}?tipo=departamento" class="tipo-card">
+        <div class="tipo-icon">🏢</div>
+        <span>Departamento</span>
+      </a>
+      <a href="{{ url_for('propiedades') }}?tipo=casa" class="tipo-card">
+        <div class="tipo-icon">🏠</div>
+        <span>Casa</span>
+      </a>
+      <a href="{{ url_for('propiedades') }}?tipo=ph" class="tipo-card">
+        <div class="tipo-icon">🏙️</div>
+        <span>PH</span>
+      </a>
+      <a href="{{ url_for('propiedades') }}?tipo=oficina" class="tipo-card">
+        <div class="tipo-icon">🏛️</div>
+        <span>Oficina</span>
+      </a>
+      <a href="{{ url_for('propiedades') }}?tipo=local" class="tipo-card">
+        <div class="tipo-icon">🏪</div>
+        <span>Local</span>
+      </a>
+      <a href="{{ url_for('propiedades') }}?tipo=terreno" class="tipo-card">
+        <div class="tipo-icon">🌿</div>
+        <span>Terreno</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="section-por-que section-dark">
+  <div class="wrap">
+    <div class="pq-grid">
+      <div class="pq-texto">
+        <span class="tag tag-light">Por qué elegirnos</span>
+        <h2>Más de 20 años<br>en el mercado<br><em>inmobiliario.</em></h2>
+        <p>En Prime Inmobiliaria combinamos trayectoria, tecnología y un equipo de asesores especializados para garantizarte la mejor experiencia en cada operación.</p>
+        <a href="{{ url_for('nosotros') }}" class="btn btn-outline-light">Conocé al equipo</a>
+      </div>
+      <div class="pq-ventajas">
+        <div class="ventaja">
+          <div class="ventaja-icon">🏆</div>
+          <div>
+            <h4>Matrícula CUCICBA</h4>
+            <p>Operamos con habilitación oficial. Tu inversión, respaldada por la ley.</p>
+          </div>
+        </div>
+        <div class="ventaja">
+          <div class="ventaja-icon">🔍</div>
+          <div>
+            <h4>Búsqueda personalizada</h4>
+            <p>Analizamos tu perfil y te presentamos solo las opciones que se ajustan a tu necesidad.</p>
+          </div>
+        </div>
+        <div class="ventaja">
+          <div class="ventaja-icon">📋</div>
+          <div>
+            <h4>Gestión legal completa</h4>
+            <p>Boleto, escritura, certificados y trámites registrales. Nos encargamos de todo.</p>
+          </div>
+        </div>
+        <div class="ventaja">
+          <div class="ventaja-icon">💼</div>
+          <div>
+            <h4>Tasaciones sin cargo</h4>
+            <p>Evaluamos tu propiedad al precio real de mercado, sin compromiso de exclusividad.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-cta">
+  <div class="wrap">
+    <div class="cta-box">
+      <div class="cta-text">
+        <h2>¿Tenés una propiedad para vender o alquilar?</h2>
+        <p>Tasamos tu propiedad sin cargo y la publicamos en los principales portales inmobiliarios del país.</p>
+      </div>
+      <div class="cta-btns">
+        <a href="{{ url_for('contacto') }}" class="btn btn-primary">Consultá gratis</a>
+        <a href="tel:{{ config.telefono }}" class="btn btn-outline">{{ config.telefono }}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

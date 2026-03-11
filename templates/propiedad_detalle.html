@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% block title %}{{ prop.titulo }} | Prime Inmobiliaria{% endblock %}
+{% block content %}
+
+<div class="detalle-page wrap">
+  <nav class="breadcrumb">
+    <a href="{{ url_for('index') }}">Inicio</a>
+    <span>/</span>
+    <a href="{{ url_for('propiedades') }}?operacion={{ prop.operacion }}">{{ prop.operacion|capitalize }}</a>
+    <span>/</span>
+    <span>{{ prop.titulo }}</span>
+  </nav>
+
+  <div class="detalle-grid">
+    <div class="detalle-media">
+      {% if prop.imagen_url %}
+        <img src="{{ prop.imagen_url }}" alt="{{ prop.titulo }}" class="detalle-img">
+      {% else %}
+        <div class="detalle-img-ph">🏠</div>
+      {% endif %}
+    </div>
+
+    <div class="detalle-info">
+      <div class="detalle-badges">
+        <span class="prop-badge prop-badge--{{ prop.operacion }}">{{ prop.operacion|capitalize }}</span>
+        {% if prop.destacada %}<span class="prop-badge-dest">★ Destacada</span>{% endif %}
+      </div>
+      <span class="detalle-tipo">{{ prop.tipo|capitalize }}</span>
+      <h1 class="detalle-titulo">{{ prop.titulo }}</h1>
+      <p class="detalle-dir">📍 {{ prop.direccion }}{% if prop.zona %}, {{ prop.zona }}{% endif %}</p>
+
+      <div class="detalle-specs-grid">
+        {% if prop.ambientes %}
+        <div class="dspec">
+          <span class="dspec-label">Ambientes</span>
+          <span class="dspec-val">{{ prop.ambientes }}</span>
+        </div>
+        {% endif %}
+        {% if prop.dormitorios %}
+        <div class="dspec">
+          <span class="dspec-label">Dormitorios</span>
+          <span class="dspec-val">{{ prop.dormitorios }}</span>
+        </div>
+        {% endif %}
+        {% if prop.banos %}
+        <div class="dspec">
+          <span class="dspec-label">Baños</span>
+          <span class="dspec-val">{{ prop.banos }}</span>
+        </div>
+        {% endif %}
+        {% if prop.superficie_cubierta %}
+        <div class="dspec">
+          <span class="dspec-label">Sup. cubierta</span>
+          <span class="dspec-val">{{ prop.superficie_cubierta }} m²</span>
+        </div>
+        {% endif %}
+        {% if prop.superficie_total %}
+        <div class="dspec">
+          <span class="dspec-label">Sup. total</span>
+          <span class="dspec-val">{{ prop.superficie_total }} m²</span>
+        </div>
+        {% endif %}
+      </div>
+
+      {% if prop.descripcion %}
+      <div class="detalle-desc">
+        <h3>Descripción</h3>
+        <p>{{ prop.descripcion }}</p>
+      </div>
+      {% endif %}
+
+      <div class="detalle-precio-box">
+        <div class="detalle-precio-row">
+          <div>
+            <span class="dp-label">Precio</span>
+            <div class="dp-valor">
+              <span class="dp-moneda">{{ prop.moneda }}</span>
+              <strong>{{ '{:,.0f}'.format(prop.precio|float) if prop.precio else '—' }}</strong>
+            </div>
+          </div>
+        </div>
+        <a href="{{ url_for('contacto') }}?interes={{ prop.titulo }}" class="btn btn-primary w-full">Consultar por esta propiedad</a>
+        <a href="https://wa.me/5491145678900?text=Hola%2C%20me%20interesa%20la%20propiedad%3A%20{{ prop.titulo|urlencode }}" class="btn btn-wa w-full" target="_blank">💬 Consultar por WhatsApp</a>
+        <div class="detalle-contacto-rapido">
+          <p>📞 <a href="tel:{{ config.telefono }}">{{ config.telefono }}</a></p>
+          <p>✉️ <a href="mailto:{{ config.email }}">{{ config.email }}</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% if relacionadas %}
+  <div class="relacionadas">
+    <h2>Propiedades similares</h2>
+    <div class="props-grid">
+      {% for r in relacionadas %}
+      <article class="prop-card">
+        <a href="{{ url_for('propiedad_detalle', pid=r.id) }}" class="prop-card-link">
+          <div class="prop-img">
+            {% if r.imagen_url %}
+              <img src="{{ r.imagen_url }}" alt="{{ r.titulo }}" loading="lazy">
+            {% else %}
+              <div class="prop-img-placeholder">🏠</div>
+            {% endif %}
+            <span class="prop-badge prop-badge--{{ r.operacion }}">{{ r.operacion|capitalize }}</span>
+          </div>
+          <div class="prop-body">
+            <div class="prop-tipo-zona">
+              <span class="prop-tipo">{{ r.tipo|capitalize }}</span>
+              <span class="prop-zona">📍 {{ r.zona }}</span>
+            </div>
+            <h3 class="prop-titulo">{{ r.titulo }}</h3>
+            <div class="prop-specs">
+              {% if r.ambientes %}<span>{{ r.ambientes }} amb.</span>{% endif %}
+              {% if r.superficie_cubierta %}<span>{{ r.superficie_cubierta }} m²</span>{% endif %}
+            </div>
+            <div class="prop-footer">
+              <div class="prop-precio">
+                <span class="moneda">{{ r.moneda }}</span>
+                <strong>{{ '{:,.0f}'.format(r.precio|float) if r.precio else '—' }}</strong>
+              </div>
+              <span class="prop-ver">Ver →</span>
+            </div>
+          </div>
+        </a>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+</div>
+
+{% endblock %}

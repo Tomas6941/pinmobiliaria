@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}Prime Inmobiliaria | Propiedades en Buenos Aires{% endblock %}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+{% block extra_css %}{% endblock %}
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="{{ url_for('index') }}" class="brand">
+      <span class="brand-mark">P</span>
+      <div class="brand-text">
+        <span class="brand-name">PRIME</span>
+        <span class="brand-sub">INMOBILIARIA</span>
+      </div>
+    </a>
+    <button class="nav-burger" id="navBurger" aria-label="Menú">
+      <span></span><span></span>
+    </button>
+    <ul class="nav-menu" id="navMenu">
+      <li><a href="{{ url_for('index') }}" class="{% if request.endpoint == 'index' %}active{% endif %}">Inicio</a></li>
+      <li><a href="{{ url_for('propiedades') }}?operacion=venta" class="{% if request.endpoint == 'propiedades' and request.args.get('operacion') == 'venta' %}active{% endif %}">Venta</a></li>
+      <li><a href="{{ url_for('propiedades') }}?operacion=alquiler" class="{% if request.endpoint == 'propiedades' and request.args.get('operacion') == 'alquiler' %}active{% endif %}">Alquiler</a></li>
+      <li><a href="{{ url_for('nosotros') }}" class="{% if request.endpoint == 'nosotros' %}active{% endif %}">Nosotros</a></li>
+      <li><a href="{{ url_for('contacto') }}" class="nav-cta">Contactar</a></li>
+    </ul>
+  </div>
+</nav>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="flashes">
+      {% for cat, msg in messages %}
+        <div class="flash flash-{{ cat }}">{{ msg }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+{% block content %}{% endblock %}
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand-col">
+        <a href="{{ url_for('index') }}" class="brand footer-brand">
+          <span class="brand-mark">P</span>
+          <div class="brand-text">
+            <span class="brand-name">PRIME</span>
+            <span class="brand-sub">INMOBILIARIA</span>
+          </div>
+        </a>
+        <p>Conectamos personas con propiedades desde 2005. Transparencia, confianza y resultados.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Instagram">IG</a>
+          <a href="#" aria-label="Facebook">FB</a>
+          <a href="#" aria-label="LinkedIn">LI</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Propiedades</h4>
+        <ul>
+          <li><a href="{{ url_for('propiedades') }}?operacion=venta">En venta</a></li>
+          <li><a href="{{ url_for('propiedades') }}?operacion=alquiler">En alquiler</a></li>
+          <li><a href="{{ url_for('propiedades') }}?tipo=departamento">Departamentos</a></li>
+          <li><a href="{{ url_for('propiedades') }}?tipo=casa">Casas</a></li>
+          <li><a href="{{ url_for('propiedades') }}?tipo=ph">PH</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Empresa</h4>
+        <ul>
+          <li><a href="{{ url_for('nosotros') }}">Quiénes somos</a></li>
+          <li><a href="{{ url_for('contacto') }}">Contacto</a></li>
+          <li><a href="{{ url_for('admin_login') }}">Acceso admin</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contacto</h4>
+        <address>
+          <p>{{ config.direccion }}</p>
+          <p><a href="tel:{{ config.telefono }}">{{ config.telefono }}</a></p>
+          <p><a href="mailto:{{ config.email }}">{{ config.email }}</a></p>
+          <p>Lun–Vie: 9:00–18:00</p>
+          <p>Sáb: 10:00–14:00</p>
+        </address>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 Prime Inmobiliaria S.A. · CUCICBA Matrícula N.º 7892</p>
+      <p>Precios en USD. Sujeto a disponibilidad y verificación.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

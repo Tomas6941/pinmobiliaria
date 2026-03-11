@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% block title %}{% if prop %}Editar{% else %}Nueva{% endif %} Propiedad | Admin{% endblock %}
+{% block content %}
+<div class="admin-page">
+  <div class="admin-topbar">
+    <div class="wrap admin-topbar-inner">
+      <h1>{% if prop %}Editar propiedad{% else %}Nueva propiedad{% endif %}</h1>
+      <a href="{{ url_for('admin_panel') }}" class="btn btn-ghost-sm">← Volver</a>
+    </div>
+  </div>
+  <div class="wrap admin-body">
+    <div class="adm-card" style="max-width:860px">
+      <form method="POST" class="form">
+        <div class="form-row">
+          <div class="form-group" style="grid-column:span 2">
+            <label>Título *</label>
+            <input type="text" name="titulo" required value="{{ prop.titulo if prop else '' }}" placeholder="Ej: Departamento 3 amb. con balcón en Palermo">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Operación *</label>
+            <select name="operacion">
+              <option value="venta" {% if prop and prop.operacion == 'venta' %}selected{% endif %}>Venta</option>
+              <option value="alquiler" {% if prop and prop.operacion == 'alquiler' %}selected{% endif %}>Alquiler</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Tipo *</label>
+            <select name="tipo">
+              {% for t in ['departamento','casa','ph','local','oficina','terreno'] %}
+              <option value="{{ t }}" {% if prop and prop.tipo == t %}selected{% endif %}>{{ t|capitalize }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Precio</label>
+            <input type="number" name="precio" value="{{ prop.precio if prop else '' }}" placeholder="Ej: 150000">
+          </div>
+          <div class="form-group">
+            <label>Moneda</label>
+            <select name="moneda">
+              <option value="USD" {% if prop and prop.moneda == 'USD' %}selected{% endif %}>USD</option>
+              <option value="ARS" {% if prop and prop.moneda == 'ARS' %}selected{% endif %}>ARS</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Zona</label>
+            <input type="text" name="zona" value="{{ prop.zona if prop else '' }}" placeholder="Ej: Palermo, Belgrano">
+          </div>
+          <div class="form-group">
+            <label>Dirección</label>
+            <input type="text" name="direccion" value="{{ prop.direccion if prop else '' }}" placeholder="Ej: Av. Santa Fe 2345">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Ambientes</label>
+            <input type="number" name="ambientes" value="{{ prop.ambientes if prop else '' }}" min="1" max="20">
+          </div>
+          <div class="form-group">
+            <label>Dormitorios</label>
+            <input type="number" name="dormitorios" value="{{ prop.dormitorios if prop else '' }}" min="0" max="15">
+          </div>
+          <div class="form-group">
+            <label>Baños</label>
+            <input type="number" name="banos" value="{{ prop.banos if prop else '' }}" min="1" max="10">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Sup. cubierta (m²)</label>
+            <input type="number" name="superficie_cubierta" value="{{ prop.superficie_cubierta if prop else '' }}" step="0.1">
+          </div>
+          <div class="form-group">
+            <label>Sup. total (m²)</label>
+            <input type="number" name="superficie_total" value="{{ prop.superficie_total if prop else '' }}" step="0.1">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Imagen (URL)</label>
+          <input type="url" name="imagen_url" value="{{ prop.imagen_url if prop else '' }}" placeholder="https://images.unsplash.com/...">
+        </div>
+        <div class="form-group">
+          <label>Descripción</label>
+          <textarea name="descripcion" rows="5" placeholder="Describí la propiedad...">{{ prop.descripcion if prop else '' }}</textarea>
+        </div>
+        <div class="form-row" style="gap:32px;align-items:center">
+          <label class="check-label">
+            <input type="checkbox" name="destacada" {% if prop and prop.destacada %}checked{% endif %}>
+            <span>Marcar como destacada</span>
+          </label>
+          <label class="check-label">
+            <input type="checkbox" name="activa" {% if not prop or prop.activa %}checked{% endif %}>
+            <span>Propiedad activa</span>
+          </label>
+        </div>
+        <div style="display:flex;gap:12px;padding-top:8px">
+          <button type="submit" class="btn btn-primary">{% if prop %}Guardar cambios{% else %}Publicar propiedad{% endif %}</button>
+          <a href="{{ url_for('admin_panel') }}" class="btn btn-ghost-sm">Cancelar</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
