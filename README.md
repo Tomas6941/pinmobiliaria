@@ -1,14 +1,8 @@
-# PIN Inmobiliaria
+# SaaS Inmobiliaria
 
-Plataforma web estática para una inmobiliaria, con catálogo de propiedades y formulario de contacto para consultas de clientes.
+Aplicación web para una inmobiliaria, con catálogo de propiedades y muchas más cosas.
 
-## Capturas
-
-https://imgur.com/a/proyecto-inmobiliaria-landing-page-Y4oCVxJ
-
----
-
-## 🛠️ Tecnologías utilizadas
+##  Tecnologías utilizadas
 
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white)
@@ -16,28 +10,37 @@ https://imgur.com/a/proyecto-inmobiliaria-landing-page-Y4oCVxJ
 
 ---
 
-## ✨ Funcionalidades
+##  Funcionalidades
 
-- 🏘️ Catálogo de propiedades con información detallada
-- 📋 Formulario de contacto para consultas de clientes
-- 📱 Diseño responsive adaptado a móviles y escritorio
+-  Catálogo de propiedades con información detallada
+-  Formulario de contacto para consultas de clientes
+-  Diseño responsive adaptado a móviles y escritorio
 
 ---
 
-## 📁 Estructura del proyecto
+##  Estructura del proyecto
 
 ```
 pinmobiliaria/
-├── index.html        # Página principal
-├── css/
-│   └── styles.css    # Estilos del sitio
-└── js/
-    └── main.js       # Lógica e interactividad
+├── templates
+    └── index.html
+    └── nosotros.html
+    └── propiedad_detalle.html
+    └── propiedades.html
+    └── contacto.html
+    └── admin.html
+    └── admin_login.html
+    └── admin_prop_form.html
+├── static
+    └──css/
+        └── styles.css   
+    └── js/
+        └── main.js       
 ```
 
 ---
 
-## ⚙️ Cómo ejecutar
+##  Cómo ejecutar
 
 1. Cloná el repositorio:
    ```bash
@@ -49,6 +52,6 @@ pinmobiliaria/
 
 ---
 
-## 👨‍💻 Autor
+## Autor
 
 **Tomás** — [GitHub](https://github.com/Tomas6941)
